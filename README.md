@@ -1,5 +1,18 @@
-# CRFT
+# CRFT (CVPR 2026)
 ### [Project Page](https://github.com/NEU-Liuxuecong/CRFT) 
+Official implementation of **CRFT: Consistent-Recurrent Feature Flow Transformer for Cross-Modal Image Registration**.
+
+## Links
+- **Code**: [GitHub Repository](https://github.com/NEU-Liuxuecong/CRFT)
+- **Paper**: [arXiv](https://arxiv.org/abs/2604.05689)
+- **Pretrained Weights**: [Release](https://github.com/NEU-Liuxuecong/CRFT/releases)
+
+## Authors
+**Xuecong Liu, Mengzhu Ding, Zixuan Sun, Zhang Li, Xichao Teng**
+
+
+
+
 
 > CRFT: Consistent-Recurrent Feature Flow Transformer for Cross-Modal Image Registration    
 > Xuecong Liu, Mengzhu Ding, Zixuan Sun, Zhang Li, Xichao Teng
