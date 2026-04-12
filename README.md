@@ -85,5 +85,11 @@ python test.py
 
 ## Citation
 ```bibtex
+@article{liu2026crft,
+  title={CRFT: Consistent-Recurrent Feature Flow Transformer for Cross-Modal Image Registration},
+  author={Liu, Xuecong and Ding, Mengzhu and Sun, Zixuan and Li, Zhang and Teng, Xichao},
+  journal={arXiv preprint arXiv:2604.05689},
+  year={2026}
+}
 
 ```
