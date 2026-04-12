@@ -4,7 +4,7 @@
 > CRFT: Consistent-Recurrent Feature Flow Transformer for Cross-Modal Image Registration    
 > Xuecong Liu, Mengzhu Ding, Zixuan Sun, Zhang Li, Xichao Teng
 
-<img src="assets/Overview.pdf">
+<img src="assets/Overview.png">
 
 
 ## Data Preparation
