@@ -11,12 +11,7 @@ Official implementation of **CRFT: Consistent-Recurrent Feature Flow Transformer
 **Xuecong Liu, Mengzhu Ding, Zixuan Sun, Zhang Li, Xichao Teng**
 
 
-
-
-
-> CRFT: Consistent-Recurrent Feature Flow Transformer for Cross-Modal Image Registration    
-> Xuecong Liu, Mengzhu Ding, Zixuan Sun, Zhang Li, Xichao Teng
-
+## Overview
 <img src="assets/Overview.png">
 
 
