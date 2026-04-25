@@ -17,8 +17,8 @@ Official implementation of **CRFT: Consistent-Recurrent Feature Flow Transformer
 
 ## Data Preparation
 To evaluate/train CRFT, you will need to download the required datasets. 
-* [RoadScene](https://pan.baidu.com/s/1zTTnmMTmh_q_6EUBveAa0Q?pwd=9n19  password: 9n19)
-* [OSdataset](https://pan.baidu.com/s/12DeWPjZdaP3aX4Gbt5n9Cw?pwd=9n19  password: 9n19)
+* [RoadScene](https://pan.baidu.com/s/1MLmwlUf2jdWdWSVQwwQt2w?pwd=kr84)
+* [OSdataset](https://pan.baidu.com/s/1UyCt8oPjN9b0YDfmRjtOWw?pwd=qjxy)
 
 
 You can create symbolic links to wherever the datasets were downloaded in the `datasets` folder
