@@ -20,13 +20,21 @@ Official implementation of **CRFT: Consistent-Recurrent Feature Flow Transformer
 
 We have updated the CRFT implementation to improve its usability and facilitate further research.
 
-**Resolution Clarification.** In the original CVPR 2026 paper, experiments involving 512 × 512 images were conducted at a downsampled resolution of 64 × 64 due to GPU memory limitations, as explicitly stated in the paper.
+## High-Resolution Inference Support (October 2026)
 
-The repository has now been updated with a revised implementation. Please note that the experimental settings used in the original paper and those supported by the updated implementation may differ.
+We are pleased to release an updated version of CRFT that enables **high-accuracy inference at the original 512 × 512 image resolution**.
 
-For reproducibility, researchers should carefully check the corresponding configurations, input resolutions, and pretrained checkpoints when evaluating CRFT.
+In our original CVPR 2026 implementation, CRFT was trained and evaluated at a downsampled resolution of 64 × 64 due to GPU memory constraints.
 
-We will continue to maintain this repository and welcome feedback from the research community.
+**With this update, CRFT retains its efficient 64 × 64 training strategy while supporting full-resolution 512 × 512 inference through a newly introduced plug-and-play module.** This enhancement requires no additional training or model retraining, allowing CRFT to achieve excellent registration accuracy at the original image resolution.
+
+**Key Highlights:**
+- **Full-Resolution Inference:** Supports direct registration of 512 × 512 images.
+- **Efficient Training:** Maintains the original 64 × 64 training resolution.
+- **Plug-and-Play Design:** Enables high-resolution inference without retraining the original model.
+- **High Registration Accuracy:** Delivers excellent registration performance at the original image resolution.
+
+This update significantly enhances the practical applicability of CRFT, enabling accurate high-resolution cross-modal image registration while preserving its training efficiency.
 
 ## Data Preparation
 
