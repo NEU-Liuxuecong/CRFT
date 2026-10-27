@@ -1,0 +1,16 @@
+{
+ "in_img_ch": 1,
+ "base_ch": 32,
+ "anchors": 24,
+ "grids": [
+  128,
+  256
+ ],
+ "radii": [
+  6,
+  4
+ ],
+ "global_grid": 64,
+ "hypotheses": 1024,
+ "margin": 0.02
+}

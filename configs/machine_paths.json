@@ -1,0 +1,22 @@
+{
+  "crft_root": "CRFT_official",
+  "crft_ckpt_os": "weights/backbone/CRFT_OSdataset.ckpt",
+  "crft_ckpt_roadscene": "weights/backbone/CRFT_RoadScene.ckpt",
+  "d1_os": "",
+  "d1_roadscene": "",
+  "data_root_os": "/root/autodl-tmp/OSdataset",
+  "data_root_roadscene": "/root/autodl-tmp/RoadScence",
+  "cache_dirs": {
+    "os": {
+      "train": "cache/os_train.pth",
+      "val": "cache/os_val.pth",
+      "test": "cache/os_test.pth"
+    },
+    "roadscene": {
+      "train": "cache/rs_train.pt",
+      "val": "cache/rs_val.pt",
+      "test": "cache/rs_test.pt"
+    }
+  },
+  "python": "python"
+}

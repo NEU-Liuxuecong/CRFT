@@ -1,75 +1,148 @@
+"""Evaluate pretrained unified CRFT models on OSdataset or RoadScene."""
+
 import argparse
-import pprint
+import csv
+import json
+import sys
 from pathlib import Path
-from loguru import logger as loguru_logger
-import numpy as np
+
 import torch
-import cv2
-import matplotlib.pyplot as plt
-from tqdm import tqdm
-import os
 
-import pytorch_lightning as pl
-from pytorch_lightning.utilities import rank_zero_only
+ROOT = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))
 
-from src.config.default import get_cfg_defaults
-from src.utils.misc import get_rank_zero_only_logger, setup_gpus
-from src.utils.profiler import build_profiler
-from src.lightning.data import MultiSceneDataModule
-from src.lightning.lightning_crft import PL_CRFT
-from src.utils.plotting import make_matching_figures
-import flow_viz
-loguru_logger = get_rank_zero_only_logger(loguru_logger)
-import os
+import plugin
+from inference import MODELS
 
-def parse_args():
-    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+def main():
+    parser = argparse.ArgumentParser(description="CRFT Evaluation")
     parser.add_argument(
-        '--ckpt_path', type=str, default='logs/tb_logs/crft-train/version_0/checkpoints/epoch=84-val_AEPE=1.656.ckpt')
+        "--dataset",
+        choices=["os", "roadscene"],
+        default="os",
+    )
     parser.add_argument(
-        '--dump_dir', type=str, default='results',help='output directory for results')
+        "--split",
+        choices=["val", "test"],
+        default="test",
+    )
     parser.add_argument(
-        '--profiler_name', type=str, default=None, help='options: [inference, pytorch], or leave it unset')
+        "--ckpt",
+        type=Path,
+        default=None,
+        help="Optional unified model checkpoint",
+    )
+    parser.add_argument("--device", default="cuda")
     parser.add_argument(
-        '--batch_size', type=int, default=1, help='batch_size per gpu')
+        "--limit",
+        type=int,
+        default=0,
+        help="0 means evaluate the complete split",
+    )
     parser.add_argument(
-        '--num_workers', type=int, default=16)
-    parser.add_argument(
-        '--thr', type=float, default=None, help='modify the coarse-level matching threshold.')
+        "--output",
+        type=Path,
+        default=None,
+    )
     args = parser.parse_args()
-    parser = pl.Trainer.add_argparse_args(parser)
-    return parser.parse_args()
 
-if __name__ == '__main__':
-    # parse arguments
-    args = parse_args()
-    pprint.pprint(vars(args))
+    if args.limit < 0:
+        parser.error("--limit must be >= 0")
 
-    # init default-cfg and merge it with the main- and data-cfg
-    config = get_cfg_defaults()
-    config.merge_from_file('configs/crft/outdoor/visible_thermal.py')
-    #config.merge_from_file('configs/data/osdataset_640.py')
-    config.merge_from_file('configs/data/roadscence_512.py')
-    pl.seed_everything(config.TRAINER.SEED)  # reproducibility
+    model_class, default_checkpoint = MODELS[args.dataset]
+    checkpoint = (
+        args.ckpt.expanduser().resolve()
+        if args.ckpt is not None
+        else default_checkpoint
+    )
 
-    # tune when testing
-    if args.thr is not None:
-        config.CRFT.MATCH_COARSE.THR = args.thr
+    if not checkpoint.is_file():
+        parser.error(f"Checkpoint not found: {checkpoint}")
 
-    loguru_logger.info(f"Args and config initialized!")
+    model = model_class(checkpoint, device=args.device)
 
-    # lightning module
-    profiler = build_profiler(args.profiler_name)
-    model = PL_CRFT(config, pretrained_ckpt=args.ckpt_path, profiler=profiler, dump_dir=args.dump_dir)
-    loguru_logger.info(f"CRFT-lightning ini-tialized!")
+    small_dataset = plugin.make_datasets(
+        args.dataset, args.split, img_resize=64
+    )
+    native_dataset = plugin.make_datasets(
+        args.dataset, args.split, img_resize=512
+    )
 
-    # lightning data
-    data_module = MultiSceneDataModule(args, config)
-    loguru_logger.info(f"DataModule initialized!")
+    if len(small_dataset) != len(native_dataset):
+        raise RuntimeError("Dataset length mismatch")
 
-    # lightning trainer
-    trainer = pl.Trainer.from_argparse_args(args, gpus=1, replace_sampler_ddp=False, logger=False)
-    
-    loguru_logger.info(f"Start testing!")
-    trainer.test(model, datamodule=data_module, verbose=False)
+    count = len(native_dataset)
+    if args.limit:
+        count = min(count, args.limit)
 
+    errors = []
+
+    with torch.inference_mode():
+        for index in range(count):
+            small_item = small_dataset[index]
+            native_item = native_dataset[index]
+
+            if tuple(small_item["pair_names"]) != tuple(native_item["pair_names"]):
+                raise RuntimeError(f"Pair mismatch at index {index}")
+
+            pred = model(small_item, native_item)
+            gt = native_item["flow"][None].to(args.device).float()
+
+            if pred.shape != gt.shape:
+                raise RuntimeError(
+                    f"Shape mismatch: pred={pred.shape}, gt={gt.shape}"
+                )
+
+            aepe = torch.linalg.vector_norm(
+                pred - gt, ord=2, dim=1
+            ).mean().item()
+
+            errors.append({
+                "index": index,
+                "pair": str(native_item["pair_names"][0]),
+                "aepe": aepe,
+            })
+
+            print(
+                f"[{index + 1}/{count}] "
+                f"AEPE={aepe:.6f}",
+                flush=True,
+            )
+
+    mean_aepe = sum(item["aepe"] for item in errors) / len(errors)
+
+    result = {
+        "dataset": args.dataset,
+        "split": args.split,
+        "count": count,
+        "checkpoint": str(checkpoint),
+        "AEPE": mean_aepe,
+    }
+
+    output = args.output or (
+        ROOT / "results" / f"{args.dataset}_{args.split}"
+    )
+    output.mkdir(parents=True, exist_ok=True)
+
+    with (output / "per_pair.csv").open(
+        "w", newline="", encoding="utf-8"
+    ) as file:
+        writer = csv.DictWriter(
+            file, fieldnames=["index", "pair", "aepe"]
+        )
+        writer.writeheader()
+        writer.writerows(errors)
+
+    (output / "summary.json").write_text(
+        json.dumps(result, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    print("\n========== Evaluation Results ==========")
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,7 @@
+{
+  "dataset": "os",
+  "split": "test",
+  "count": 288,
+  "checkpoint": "/root/CRFT_D1_F13_JointTrain/runs/long_a_os_1000ep/best.ckpt",
+  "AEPE": 1.2505730104943116
+}

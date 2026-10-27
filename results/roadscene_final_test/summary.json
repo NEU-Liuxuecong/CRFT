@@ -1,0 +1,10 @@
+{
+  "dataset": "roadscene",
+  "split": "test",
+  "count": 22,
+  "checkpoint": "/root/CRFT_D1_F13_Final/weights/roadscene/CRFT_D1_F13_RoadScene_best.ckpt",
+  "AEPE": 1.5765335275368257,
+  "CMR@3px": 85.81674749200994,
+  "CMR@1px": 46.46415710449219,
+  "CMR@0.7px": 34.983860362659804
+}

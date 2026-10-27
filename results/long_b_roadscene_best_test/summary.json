@@ -1,0 +1,7 @@
+{
+  "dataset": "roadscene",
+  "split": "test",
+  "count": 22,
+  "checkpoint": "/root/CRFT_D1_F13_JointTrain/runs/long_b_roadscene_100ep/best.ckpt",
+  "AEPE": 3.1043995767831802
+}

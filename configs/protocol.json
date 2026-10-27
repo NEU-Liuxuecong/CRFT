@@ -1,0 +1,22 @@
+{
+  "dataset_plugin_init": "independent random init per dataset",
+  "cross_dataset_plugin_checkpoint": false,
+  "frozen_crft": true,
+  "loss": "original D1 staged losses (no F13 backprop)",
+  "f13": "continuous zero-parameter postprocessing, no rounding",
+  "stages": {
+    "l0": {"epochs_max": 120, "lr": 0.001, "match_weight": 0.1, "patience": 30, "min_epochs": 0, "perturb": false},
+    "g1": {"epochs_max": 60, "lr": 0.0001, "patience": 15, "min_epochs": 30, "loss": "global_match_loss"},
+    "l1": {"epochs_max": 40, "lr": 0.0001, "match_weight": 0.5, "patience": 10, "min_epochs": 15, "perturb": "perturb_initial"}
+  },
+  "optimizer": {"name": "AdamW", "weight_decay": 0.0001, "microbatch": 1, "accum": 4, "clip_grad_norm": 1.0, "workers": 0},
+  "scheduler": "CosineAnnealingLR(T_max = stage max epochs)",
+  "seed": 66,
+  "architecture": {"in_img_ch": 1, "base_ch": 32, "anchors": 24, "grids": [128, 256], "radii": [6, 4],
+                   "global_grid": 64, "hypotheses": 1024, "margin": 0.02},
+  "selection": {"l0": "local flow full-val AEPE (no F13)",
+                "g1": "GlobalRescueRefiner full inference full-val AEPE (no F13)",
+                "l1": "local flow full-val AEPE (no F13)",
+                "tie": "earlier epoch", "epoch0": "diagnostic only"},
+  "final_metric": "full-image 512 native-pixel AEPE, per-pair mean then equal mean over split"
+}

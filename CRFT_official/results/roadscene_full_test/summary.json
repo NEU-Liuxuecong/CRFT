@@ -1,0 +1,7 @@
+{
+  "dataset": "roadscene",
+  "split": "test",
+  "count": 22,
+  "checkpoint": "/root/CRFT_D1_F13_Release/weights/roadscene/CRFT_RoadScene.ckpt",
+  "AEPE": 2.14583557844162
+}
