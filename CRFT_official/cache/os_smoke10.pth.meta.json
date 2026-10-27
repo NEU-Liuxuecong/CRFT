@@ -1,0 +1,17 @@
+{
+ "dataset": "os",
+ "split": "train",
+ "n": 10,
+ "out": "/root/autodl-tmp/CRFT_D1_ContinuousF13/CRFT_official/cache/os_smoke10.pth",
+ "sha256": "e08faf20854cb78ad5f9e42e75835aa335223e2d37aaa4216dafd9046a21d134",
+ "bridge_sha256": "3bf2c7d916ca3da58c15cbb5e210f020b26dd82e8ec12497eeca9465ae31914c",
+ "ckpt_sha256": "cdb67c523c1c50feb1f975f91d08bef262d340cb581c41604d6279a46dde9c0b",
+ "crft_ckpt": "/root/autodl-tmp/CRFT_D1_ContinuousF13/weights/os/CRFT_OSdataset.ckpt",
+ "unit": "512 native px",
+ "shape": [
+  2,
+  512,
+  512
+ ],
+ "generated_by": "make_cache.py"
+}

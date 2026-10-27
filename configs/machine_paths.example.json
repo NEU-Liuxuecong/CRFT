@@ -1,0 +1,20 @@
+{
+ "crft_root": "path/to/CRFT_repo",
+ "crft_ckpt_os": "path/to/weights/os/crft_os_64.ckpt",
+ "crft_ckpt_roadscene": "path/to/weights/roadscene/crft_roadscene_64.ckpt",
+ "d1_os": "path/to/reference_weights/frozen_d1.ckpt",
+ "d1_roadscene": "path/to/reference_weights/best_d1_roadscene_full.pth",
+ "data_root_os": "datasets/OSdataset",
+ "data_root_roadscene": "datasets/RoadScence",
+ "cache_dirs": {
+  "os": {
+   "train": "cache/os_train.pth",
+   "val": "cache/os_val.pth"
+  },
+  "roadscene": {
+   "train": "cache/rs_train.pt",
+   "val": "cache/rs_val.pt"
+  }
+ },
+ "python": "D:\\Miniconda\\anaconda\\envs\\crft\\python.exe"
+}

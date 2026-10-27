@@ -1,0 +1,10 @@
+{
+  "dataset": "os",
+  "split": "test",
+  "count": 288,
+  "checkpoint": "/root/CRFT_D1_F13_Final/weights/os/CRFT_D1_F13_OS_best.ckpt",
+  "AEPE": 1.063454060517769,
+  "CMR@3px": 93.22629637188382,
+  "CMR@1px": 64.09240961074829,
+  "CMR@0.7px": 50.774549113379585
+}

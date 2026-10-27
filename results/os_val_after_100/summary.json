@@ -1,0 +1,7 @@
+{
+  "dataset": "os",
+  "split": "val",
+  "count": 153,
+  "checkpoint": "/root/CRFT_D1_F13_JointTrain/runs/joint_os_100/last.ckpt",
+  "AEPE": 1.649666747918316
+}

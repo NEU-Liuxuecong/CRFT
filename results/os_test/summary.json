@@ -1,0 +1,7 @@
+{
+  "dataset": "os",
+  "split": "test",
+  "count": 1,
+  "checkpoint": "/root/CRFT_D1_F13_Release/weights/os/CRFT_OSdataset.ckpt",
+  "AEPE": 3.474672794342041
+}

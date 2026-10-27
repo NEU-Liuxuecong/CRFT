@@ -1,0 +1,7 @@
+{
+  "dataset": "os",
+  "split": "test",
+  "count": 288,
+  "checkpoint": "/root/CRFT_Final_Models/os/CRFT_D1_F13_OS_epoch1215.ckpt",
+  "AEPE": 1.063454060517769
+}

@@ -1,0 +1,17 @@
+{
+ "dataset": "roadscene",
+ "split": "train",
+ "n": 1,
+ "out": "/root/autodl-tmp/CRFT_D1_ContinuousF13/CRFT_official/cache/rs_smoke.pt",
+ "sha256": "02c4a593f1c2689b179790de3c12b80aa26b11fd7646edb3f5de34fa7535da37",
+ "bridge_sha256": "3bf2c7d916ca3da58c15cbb5e210f020b26dd82e8ec12497eeca9465ae31914c",
+ "ckpt_sha256": "8525d4c5c15a2749e9538a5c1f4ffcc7efe423b851ae1e55124f8e99bc02c483",
+ "crft_ckpt": "/root/CRFT/checkpoints/CRFT_RoadScene.ckpt",
+ "unit": "512 native px",
+ "shape": [
+  2,
+  512,
+  512
+ ],
+ "generated_by": "make_cache.py"
+}
